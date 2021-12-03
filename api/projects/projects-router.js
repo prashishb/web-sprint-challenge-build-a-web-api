@@ -3,6 +3,7 @@ const {
   validateProjectId,
   validateProject,
   errorHandling,
+  validateProjectUpdate,
 } = require('./projects-middleware');
 
 const Projects = require('./projects-model');
@@ -38,13 +39,18 @@ router.post('/', validateProject, (req, res, next) => {
 // [PUT] /api/projects/:id (Returns the updated project as the body of the response)
 // If there is no project with the given id it responds with a status code 404
 // If the request body is missing any of the required fields it responds with a status code 400
-router.put('/:id', validateProjectId, validateProject, (req, res, next) => {
-  Projects.update(req.params.id, req.body)
-    .then((project) => {
-      res.json(project);
-    })
-    .catch(next);
-});
+router.put(
+  '/:id',
+  validateProjectId,
+  validateProjectUpdate,
+  (req, res, next) => {
+    Projects.update(req.params.id, req.body)
+      .then((project) => {
+        res.json(project);
+      })
+      .catch(next);
+  }
+);
 
 router.use(errorHandling);
 
