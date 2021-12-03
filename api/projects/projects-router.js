@@ -67,6 +67,17 @@ router.delete('/:id', validateProjectId, async (req, res, next) => {
   }
 });
 
+// [GET] /api/projects/:id/actions (Returns an array of actions (could be empty) belonging to a project with the given id)
+// If there is no project with the given id it responds with a status code 404
+router.get('/:id/actions', validateProjectId, async (req, res, next) => {
+  try {
+    const actions = await Projects.getProjectActions(req.params.id);
+    res.json(actions);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.use(errorHandling);
 
 module.exports = router;
