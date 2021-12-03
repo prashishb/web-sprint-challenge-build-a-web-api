@@ -35,6 +35,17 @@ router.post('/', validateAction, (req, res, next) => {
     .catch(next);
 });
 
+// [PUT] /api/actions/:id (Returns the updated action as the body of the response)
+// If there is no action with the given id it responds with a status code 404
+// If the request body is missing any of the required fields it responds with a status code 400
+router.put('/:id', validateActionId, validateAction, (req, res, next) => {
+  Actions.update(req.params.id, req.body)
+    .then((action) => {
+      res.json(action);
+    })
+    .catch(next);
+});
+
 router.use(errorHandling);
 
 module.exports = router;
