@@ -52,6 +52,21 @@ router.put(
   }
 );
 
+// [DELETE] /api/projects/:id (Returns no response body)
+// If there is no project with the given id it responds with a status code 404
+router.delete('/:id', validateProjectId, async (req, res, next) => {
+  try {
+    const deleted = await Projects.remove(req.params.id);
+    if (deleted) {
+      res.json(req.project);
+    } else {
+      next();
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.use(errorHandling);
 
 module.exports = router;
