@@ -16,17 +16,17 @@ async function validateProjectId(req, res, next) {
       req.project = project;
       next();
     } else {
-      res.status(404).json({ message: 'Invalid project ID' });
+      next({ status: 404, message: 'Invalid project ID' });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Failed to get project' });
+    next(err);
   }
 }
 
 function validateProject(req, res, next) {
   const { name, description } = req.body;
   if (!name || !description) {
-    res.status(400).json({ message: 'Missing required fields' });
+    next({ status: 400, message: 'Missing required fields' });
   } else {
     next();
   }
