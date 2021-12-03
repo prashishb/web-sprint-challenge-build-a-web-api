@@ -46,6 +46,21 @@ router.put('/:id', validateActionId, validateAction, (req, res, next) => {
     .catch(next);
 });
 
+// [DELETE] /api/actions/:id (Returns no response body)
+// If there is no action with the given id it responds with a status code 404
+router.delete('/:id', validateActionId, async (req, res, next) => {
+  try {
+    const deleted = await Actions.remove(req.params.id);
+    if (deleted) {
+      res.json(req.action);
+    } else {
+      next();
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.use(errorHandling);
 
 module.exports = router;
