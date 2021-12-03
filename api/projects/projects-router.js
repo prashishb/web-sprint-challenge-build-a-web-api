@@ -25,6 +25,16 @@ router.get('/:id', validateProjectId, (req, res) => {
   res.json(req.project);
 });
 
+// [POST] /api/projects (Returns the newly created project as the body of the response)
+// If the request body is missing any of the required fields it responds with a status code 400
+router.post('/', validateProject, (req, res, next) => {
+  Projects.insert(req.body)
+    .then((project) => {
+      res.status(201).json(project);
+    })
+    .catch(next);
+});
+
 router.use(errorHandling);
 
 module.exports = router;
