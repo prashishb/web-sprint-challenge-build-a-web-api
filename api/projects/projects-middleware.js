@@ -32,8 +32,16 @@ function validateProject(req, res, next) {
   }
 }
 
+function errorHandling(err, req, res, next) {
+  res.status(err.status || 500).json({
+    message: `ERROR: ${err.message}`,
+    stack: err.stack,
+  });
+}
+
 module.exports = {
   logger,
   validateProjectId,
   validateProject,
+  errorHandling,
 };
